@@ -1,2 +1,2 @@
-# pao-lab
-laborator pao
+# pao-project
+PAO Project - Banking Platform
