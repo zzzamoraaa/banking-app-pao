@@ -12,8 +12,8 @@ import java.util.List;
 public class ClientSingleton {
     private static ClientSingleton single_instance = null;
 
-    final private ClientGeneration customerGeneration = new ClientGeneration();
-    private List<Client> customers = new ArrayList<Client>();
+    final private ClientGeneration clientGeneration = new ClientGeneration();
+    private List<Client> clients = new ArrayList<Client>();
 
     public static ClientSingleton getInstance()
     {
@@ -22,12 +22,12 @@ public class ClientSingleton {
         return single_instance;
     }
 
-    public void setClients(List<Client> customers) {
-        this.customers = customers;
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 
     public List<Client> getClients() {
-        return customers;
+        return clients;
     }
 
     private static List<String[]> getCSVColumns(String fileName){
@@ -43,7 +43,7 @@ public class ClientSingleton {
                 columns.add(fields);
             }
         } catch (IOException e) {
-            System.out.println("No saved customers!");
+            System.out.println("No saved clients!");
         }
 
         return columns;
@@ -51,7 +51,7 @@ public class ClientSingleton {
 
     public void loadFromCSV() {
         try{
-            var columns = ClientSingleton.getCSVColumns("data/customers.csv");
+            var columns = ClientSingleton.getCSVColumns("data/clients.csv");
             for(var fields : columns){
                 var newClient = new Client(
                         Integer.parseInt(fields[0]),
@@ -63,7 +63,7 @@ public class ClientSingleton {
                         fields[6],
                         new Address(fields[7], fields[8], fields[9], Integer.parseInt(fields[10]))
                 );
-                customers.add(newClient);
+                clients.add(newClient);
             }
             ClientGeneration.incrementUniqueId(columns.size());
         }catch (ParseException e){
@@ -74,9 +74,9 @@ public class ClientSingleton {
 
     public void dumpToCSV(){
         try{
-            var writer = new FileWriter("data/customers.csv");
-            for(var customer : this.customers){
-                writer.write(customer.toCSV());
+            var writer = new FileWriter("data/clients.csv");
+            for(var client : this.clients){
+                writer.write(client.toCSV());
                 writer.write("\n");
             }
             writer.close();
