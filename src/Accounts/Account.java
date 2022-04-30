@@ -73,7 +73,7 @@ public class Account {
                 "IBAN='" + IBAN + '\'' +
                 ", amount=" + amount +
                 ", name='" + name + '\'' +
-                ", customerId=" + clientId +
+                ", clientId=" + clientId +
                 '}';
     }
     public String toCSV() {
