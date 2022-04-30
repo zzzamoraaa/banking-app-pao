@@ -74,6 +74,33 @@ public class Client {
             transactions.addAll(account.filterTransactions(allTransactions, year));
         return transactions;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "clientId=" + clientId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", CNP='" + CNP + '\'' +
+                ", birthDate=" + (new SimpleDateFormat("yyyy-MM-dd")).format(birthDate) +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address=" + address.toString() +
+                '}';
+    }
+
+    public String toCSV(){
+        return clientId +
+                "," + firstName +
+                "," + lastName +
+                "," + CNP +
+                "," + (new SimpleDateFormat("yyyy-MM-dd")).format(birthDate) +
+                "," + email +
+                "," + phone +
+                "," + address.toCSV();
+    }
+
+
     public int getClientId() {
         return clientId;
     }

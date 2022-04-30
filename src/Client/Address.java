@@ -26,6 +26,22 @@ public class Address {
         this.codPostal = Integer.parseInt(in.nextLine());
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "street='" + strada + '\'' +
+                ", city='" + oras + '\'' +
+                ", county='" + judet + '\'' +
+                ", postalCode=" + codPostal +
+                '}';
+    }
+
+    public String toCSV() {
+        return strada +
+                "," + oras +
+                "," + judet+
+                "," + codPostal;
+    }
     public void setStrada(String strada) {
         this.strada = strada;
     }

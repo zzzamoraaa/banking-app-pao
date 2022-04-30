@@ -67,6 +67,22 @@ public class Account {
         this.amount = amount;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "IBAN='" + IBAN + '\'' +
+                ", amount=" + amount +
+                ", name='" + name + '\'' +
+                ", customerId=" + clientId +
+                '}';
+    }
+    public String toCSV() {
+        return IBAN +
+                "," + amount +
+                "," + name +
+                "," + clientId;
+    }
+
     private String generateIBAN(int uniqueId){
         String bank = "BRD";
 

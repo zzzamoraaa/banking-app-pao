@@ -1,9 +1,7 @@
 package com.company;
 
-import Accounts.Account;
-import Accounts.Transaction;
-import Card.Visa;
-import Client.Client;
+import Accounts.*;
+import Client.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +27,15 @@ public class Main {
 
 
         ServiceClass serviceClass = new ServiceClass();
+        AuditService auditService = new AuditService();
+
+        ClientSingleton.getInstance().loadFromCSV();
+        AccountSingleton.getInstance().loadFromCSV();
+        TransactionSingleton.getInstance().loadFromCSV();
+        serviceClass.setClients(ClientSingleton.getInstance().getClients());
+        serviceClass.setAccounts(AccountSingleton.getInstance().getAccounts());
+        serviceClass.setTransactions(TransactionSingleton.getInstance().getTransactions());
+
         while (!end) {
             System.out.println("Insert command: (help - see commands)");
             String command = in.nextLine().toLowerCase(Locale.ROOT);
@@ -68,9 +75,18 @@ public class Main {
                                                     else
                                                         if(command.equals("end"))
                                                             end = true;
+
+                if(availableCommands.contains(command))
+                    auditService.logAction(command);
             } catch (Exception e) {
                 System.out.println(e);
             }
+            ClientSingleton.getInstance().setClients(serviceClass.getClients());
+            AccountSingleton.getInstance().setAccounts(serviceClass.getAccounts());
+            TransactionSingleton.getInstance().setTransactions(serviceClass.getTransactions());
+            ClientSingleton.getInstance().dumpToCSV();
+            AccountSingleton.getInstance().dumpToCSV();
+            TransactionSingleton.getInstance().dumpToCSV();
         }
 
     }
