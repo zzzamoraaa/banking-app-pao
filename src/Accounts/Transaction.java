@@ -1,5 +1,6 @@
 package Accounts;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Transaction {
@@ -9,7 +10,7 @@ public class Transaction {
     private final String details;
     private final Date transactionDate;
 
-    public Transaction (String fromIBAN, String toIBAN, float amount, String details) throws Exception{
+    public Transaction(String fromIBAN, String toIBAN, float amount, String details) throws Exception{
         if (amount <= 0)
             throw new Exception("Invalid amount");
 
@@ -18,6 +19,25 @@ public class Transaction {
         this.amount = amount;
         this.details = details;
         this.transactionDate = new Date();
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "from=" + fromIBAN +
+                ", to=" + toIBAN +
+                ", amount=" + amount +
+                ", details='" + details + '\'' +
+                ", creationDate=" + (new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss")).format(transactionDate) +
+                '}';
+    }
+
+    public String toCSV() {
+        return fromIBAN +
+                "," + toIBAN +
+                "," + amount +
+                "," + details +
+                "," + (new SimpleDateFormat("yyyy-MM-dd h:m:s")).format(transactionDate);
     }
 
     public String getFromIBAN()
