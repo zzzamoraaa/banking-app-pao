@@ -4,6 +4,8 @@ import Accounts.Account;
 import Accounts.Transaction;
 import Card.CardGeneration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +36,21 @@ public class Client {
         this.read(in);
     }
 
+    public Client(int clientId, ResultSet in) throws SQLException {
+        this.clientId = clientId;
+        this.read(in);
+    }
+
+    public void read(ResultSet in) throws SQLException {
+        this.firstName = in.getString("firstName");
+        this.lastName = in.getString("lastName");
+        this.CNP = in.getString("CNP");
+        this.birthDate = in.getDate("birthDate");
+        this.email = in.getString("email");
+        this.phone = in.getString("phone");
+        this.address = new Address(in);
+    }
+    
     public void read(Scanner in) throws ParseException {
         System.out.println("First name: ");
         this.firstName = in.nextLine();

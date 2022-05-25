@@ -1,5 +1,7 @@
 package Accounts;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,6 +23,14 @@ public class Transaction {
         this.transactionDate = new Date();
     }
 
+    public Transaction(ResultSet in) throws SQLException {
+        this.fromIBAN = in.getString("fromIBAN");
+        this.toIBAN = in.getString("toIBAN");
+        this.amount = in.getFloat("amount");
+        this.details = in.getString("details");
+        this.transactionDate = in.getDate("transactionDate");
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -28,7 +38,7 @@ public class Transaction {
                 ", to=" + toIBAN +
                 ", amount=" + amount +
                 ", details='" + details + '\'' +
-                ", creationDate=" + (new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss")).format(transactionDate) +
+                ", transactionDate=" + (new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss")).format(transactionDate) +
                 '}';
     }
 

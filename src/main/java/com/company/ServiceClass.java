@@ -20,6 +20,10 @@ public class ServiceClass {
     private final ClientGeneration clientGeneration = new ClientGeneration();
     private final AccountGeneration accountGeneration = new AccountGeneration();
 
+    private ClientDatabase clientDatabase = null;
+    private TransactionDatabase transactionDatabase = null;
+    private AccountDatabase accountDatabase = null;
+
     //Getteri
 
     public List<Client> getClients() {
@@ -44,7 +48,17 @@ public class ServiceClass {
         this.transactions = transactions;
     }
 
+    public ServiceClass(ClientDatabase clientDatabase, TransactionDatabase transactionDatabase, AccountDatabase accountDatabase) {
+        this.clientDatabase = clientDatabase;
+        this.transactionDatabase = transactionDatabase;
+        this.accountDatabase = accountDatabase;
 
+        this.clients = clientDatabase.read();
+        this.transactions = transactionDatabase.read();
+        this.accounts = accountDatabase.read();
+
+        this.linkAccounts();
+    }
     //Functie ajutatoare (get client from input)
 
     private Client getClientFromInput(Scanner in) throws Exception{
