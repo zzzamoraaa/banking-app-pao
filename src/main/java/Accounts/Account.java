@@ -3,6 +3,8 @@ package Accounts;
 import Card.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Account {
     protected String IBAN;
@@ -27,6 +29,14 @@ public class Account {
         this.name = name;
         this.clientId = clientId;
     }
+
+    public Account(ResultSet in) throws SQLException {
+        this.IBAN = in.getString("IBAN");
+        this.amount = in.getFloat("amount");
+        this.name = in.getString("name");
+        this.clientId = in.getInt("clientId");
+    }
+
     public List<Transaction> filterTransactions(List<Transaction> allTransactions){
         List<Transaction> transactions = new ArrayList<>();
         for(var transaction: allTransactions)
