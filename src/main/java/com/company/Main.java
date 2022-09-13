@@ -3,10 +3,11 @@ package com.company;
 import Accounts.*;
 import Client.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.*;
+
 
 public class Main {
 
@@ -19,22 +20,32 @@ public class Main {
                                                          "Închidere cont client", "Preluare transacții client",
                                                         "Afișează comenzi", "Finalizare");
 
+    public static Connection getConnection() {
+        try{
+            String url = "jdbc:mysql://localhost:3306/proiectpao";
+            String user = "root";
+            String password = "root";
 
+            return DriverManager.getConnection(url, user, password);
+        }catch (SQLException e){
+            System.out.println(e.toString());
+            return null;
+        }
+    }
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         boolean end = false;
 
 
-        ServiceClass serviceClass = new ServiceClass();
-        AuditService auditService = new AuditService();
+        var connection = Main.getConnection();
 
-        ClientSingleton.getInstance().loadFromCSV();
-        AccountSingleton.getInstance().loadFromCSV();
-        TransactionSingleton.getInstance().loadFromCSV();
-        serviceClass.setClients(ClientSingleton.getInstance().getClients());
-        serviceClass.setAccounts(AccountSingleton.getInstance().getAccounts());
-        serviceClass.setTransactions(TransactionSingleton.getInstance().getTransactions());
+        var clientDatabase = new ClientDatabase(connection);
+        var transactionDatabase = new TransactionDatabase(connection);
+        var accountDatabase = new AccountDatabase(connection);
+
+        ServiceClass serviceClass = new ServiceClass(clientDatabase, transactionDatabase, accountDatabase);
+        AuditService auditService = new AuditService();
 
         while (!end) {
             System.out.println("Insert command: (help - see commands)");
@@ -81,12 +92,12 @@ public class Main {
             } catch (Exception e) {
                 System.out.println(e);
             }
-            ClientSingleton.getInstance().setClients(serviceClass.getClients());
-            AccountSingleton.getInstance().setAccounts(serviceClass.getAccounts());
-            TransactionSingleton.getInstance().setTransactions(serviceClass.getTransactions());
-            ClientSingleton.getInstance().dumpToCSV();
-            AccountSingleton.getInstance().dumpToCSV();
-            TransactionSingleton.getInstance().dumpToCSV();
+        }
+        try{
+            assert connection != null;
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.toString());
         }
 
     }
